@@ -10,6 +10,13 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
+if ($_COOKIE['lang'])
+    Yii::$app->language = $_COOKIE['lang'];
+if (Yii::$app->request->get('lang')){
+    Yii::$app->language = Yii::$app->request->get('lang');
+    setcookie('lang', Yii::$app->request->get('lang'), time()+60*60*24*30*12, '/');
+}
+
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
@@ -32,16 +39,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <header id="header">
     <?php
     NavBar::begin([
-        'brandLabel' => "Тестовое задание",
+        'brandLabel' => Yii::t('app',"Тестовое задание"),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Фотки', 'url' => ['/images/index']],
-            ['label' => 'Загрузить', 'url' => ['/images/create']],
-            ['label' => 'Контакты', 'url' => ['/site/']],
+            ['label' => Yii::t('app','Фотки'), 'url' => ['/images/index']],
+            ['label' => Yii::t('app','Загрузить'), 'url' => ['/images/create']],
+            ['label' => Yii::t('app','Контакты'), 'url' => ['/site/']],
         ]
     ]);
     NavBar::end();
@@ -61,7 +68,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <footer id="footer" class="mt-auto py-3 bg-light">
     <div class="container">
         <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; My Company <?= date('Y') ?></div>
+            <div class="col-md-6 text-center text-md-start"><?=Yii::t('app','&copy; My Company'),  date('Y') ?></div>
             <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
         </div>
     </div>

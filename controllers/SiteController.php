@@ -2,13 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\Migr;
+use app\models\SourceMessage;
+use app\models\TranslateTables;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -61,6 +63,20 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $migr = new TranslateTables();
+        try {
+            $migr->down();
+        }catch (Exception $exception){}
+
+        $migr->up();
+
+        $arr = require_once Yii::$app->basePath . "/message/en-EN/app.php";
+        foreach ($arr as $name=>$value){
+            $model = new SourceMessage();
+            $model->category = 'app';
+            $model->message = $name;
+            $model->save();
+        }
         return $this->render('index');
     }
 }

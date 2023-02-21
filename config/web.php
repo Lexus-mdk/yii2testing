@@ -13,6 +13,21 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'consoleRunner' => [
+            'class' => 'toriphes\console\Runner'
+        ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                    'sourceMessageTable'=>'{{%source_message}}',
+                    'messageTable'=>'{{%message}}',
+                    'enableCaching' => true,
+                    'cachingDuration' => 10,
+                    'forceTranslation'=>true,
+                ]
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '5P88FY80qUa-XSRHUlvN9xfbd5laZnEH',
